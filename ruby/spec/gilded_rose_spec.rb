@@ -57,6 +57,15 @@ describe GildedRose do
         rose = GildedRose.new(items)
         expect{rose.update_quality()}.to change{items[0].quality}.from(20).to(21)
       end
+      it 'theyir quality increases by 2 when there are 10 days or less until Sellin' do
+        items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=10, quality=20),]
+        rose = GildedRose.new(items)
+        4.times do
+          rose.update_quality()
+        end
+        expect{rose.update_quality()}.to change{items[0].quality}.from(28).to(30)
+
+      end
     end
   end
 end
