@@ -50,5 +50,13 @@ describe GildedRose do
         expect{rose.update_quality()}.to_not change{items[0].quality}
       end
     end
+
+    context 'Backstage passes' do
+      it 'they increase in quality as its Sellin value approaches' do
+        items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=15, quality=20),]
+        rose = GildedRose.new(items)
+        expect{rose.update_quality()}.to change{items[0].quality}.from(20).to(21)
+      end
+    end
   end
 end
