@@ -42,9 +42,13 @@ describe GildedRose do
         expect{rose.update_quality()}.to change{items[0].quality}.from(49).to(50)
       end
     end
+
+    context "for 'Sulfuras'" do
+      it 'does not change in quality' do
+        items =[Item.new(name="Sulfuras, Hand of Ragnaros", sell_in=0, quality=80)]
+        rose = GildedRose.new(items)
+        expect{rose.update_quality()}.to_not change{items[0].quality}
+      end
+    end
   end
 end
-
-    # context 'for Aged Brie' do
-    #   it ''
-    # end
