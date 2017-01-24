@@ -49,8 +49,12 @@ describe GildedRose do
         rose = GildedRose.new(items)
         expect{rose.update_quality()}.to_not change{items[0].quality}
       end
+      it 'does not chang in sellin' do
+        items =[Item.new(name="Sulfuras, Hand of Ragnaros", sell_in=0, quality=80)]
+        rose = GildedRose.new(items)
+        expect{rose.update_quality()}.to_not change{items[0].sell_in}
+      end
     end
-
     context 'Backstage passes' do
       it 'they increase in quality as its Sellin value approaches' do
         items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=15, quality=20),]
@@ -82,6 +86,14 @@ describe GildedRose do
         items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=3, quality=49),]
         rose = GildedRose.new(items)
         expect{rose.update_quality()}.to change{items[0].quality}.from(49).to(50)
+      end
+    end
+
+    context "for 'Conjured' items" do
+      it 'the quality decreases twice as fast as normal items' do
+        items = [Item.new(name="Conjured Mana Cake", sell_in=3, quality=6)]
+        rose = GildedRose.new(items)
+        expect{rose.update_quality()}.to change{items[0].quality}.from(6).to(4)
       end
     end
   end
