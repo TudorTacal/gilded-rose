@@ -36,7 +36,7 @@ describe GildedRose do
         rose = GildedRose.new(items)
         expect{rose.update_quality()}.to change{items[0].quality}.from(0).to(1)
       end
-      it "and for all items the quality can't go over 50" do
+      it "the quality can't go over 50" do
         items = [Item.new(name="Aged Brie", sell_in=2, quality=49)]
         rose = GildedRose.new(items)
         expect{rose.update_quality()}.to change{items[0].quality}.from(49).to(50)
@@ -77,6 +77,11 @@ describe GildedRose do
         items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=0, quality=20),]
         rose = GildedRose.new(items)
         expect{rose.update_quality()}.to change{items[0].quality}.from(20).to(0)
+      end
+      it "the quality can't go over 50" do
+        items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=3, quality=49),]
+        rose = GildedRose.new(items)
+        expect{rose.update_quality()}.to change{items[0].quality}.from(49).to(50)
       end
     end
   end
