@@ -1,7 +1,5 @@
 #!/usr/bin/ruby -w
-
-require File.join(File.dirname(__FILE__), 'gilded_rose')
-
+require './lib/gilded_rose.rb'
 puts "OMGHAI!"
 items = [
   Item.new(name="+5 Dexterity Vest", sell_in=10, quality=20),
