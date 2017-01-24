@@ -90,10 +90,15 @@ describe GildedRose do
     end
 
     context "for 'Conjured' items" do
-      it 'the quality decreases twice as fast as normal items' do
+      it 'the quality decreases twice as fast as normal items while sellin' do
         items = [Item.new(name="Conjured Mana Cake", sell_in=3, quality=6)]
         rose = GildedRose.new(items)
         expect{rose.update_quality()}.to change{items[0].quality}.from(6).to(4)
+      end
+      it 'the quality decreases twice as fast as normal items once sell by date has passed' do
+        items = [Item.new(name="Conjured Mana Cake", sell_in=-1, quality=6)]
+        rose = GildedRose.new(items)
+        expect{rose.update_quality()}.to change{items[0].quality}.from(6).to(2)
       end
     end
   end
