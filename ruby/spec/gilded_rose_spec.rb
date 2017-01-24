@@ -3,10 +3,10 @@ require 'gilded_rose'
 
 describe GildedRose do
 
+
   describe "#update_quality" do
 
     context 'for non-special items' do
-
       it "decreases the quality of the items with 1 per day" do
         items = [Item.new(name="+5 Dexterity Vest", sell_in=10, quality=20)]
         rose = GildedRose.new(items)
@@ -26,6 +26,19 @@ describe GildedRose do
         items = [Item.new(name="+5 Dexterity Vest", sell_in=1, quality=0)]
         rose = GildedRose.new(items)
         expect{rose.update_quality()}.to_not change{items[0].quality}
+      end
+    end
+
+    context "for 'Aged Brie'" do
+
+      it 'it increases the quality the older it gets with 1 per day' do
+        items = [Item.new(name="Aged Brie", sell_in=2, quality=0)]
+        rose = GildedRose.new(items)
+        expect{rose.update_quality()}.to change{items[0].quality}.from(0).to(1)
+      end
+      it "and for all items the quality can't go over 50" do
+        items = [Item.new(name="Aged Brie", sell_in=2, quality=0)]
+        rose = GildedRose.new(items)
       end
     end
   end
