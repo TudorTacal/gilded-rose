@@ -4,6 +4,21 @@ class GildedRose
     @items = items
   end
 
+  def update_aged_brie
+  end
+
+  def update_sulfuras
+  end
+
+  def update_backstage_passes
+  end
+
+  def update_conjured
+  end
+
+  def update_normal_items
+  end
+
   def update_quality()
     @items.each do |item|
       if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert"
