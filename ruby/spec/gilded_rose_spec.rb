@@ -37,9 +37,9 @@ describe GildedRose do
         expect{rose.update_quality()}.to change{items[0].quality}.from(0).to(1)
       end
       it "the quality can't go over 50" do
-        items = [Item.new(name="Aged Brie", sell_in=2, quality=49)]
+        items = [Item.new(name="Aged Brie", sell_in=2, quality=50)]
         rose = GildedRose.new(items)
-        expect{rose.update_quality()}.to change{items[0].quality}.from(49).to(50)
+        expect{rose.update_quality()}.to_not change{items[0].quality}
       end
     end
 
@@ -100,6 +100,19 @@ describe GildedRose do
         rose = GildedRose.new(items)
         expect{rose.update_quality()}.to change{items[0].quality}.from(6).to(2)
       end
+    end
+  end
+
+  describe '#update_aged_brie' do
+    it 'it increases the quality the older it gets with 1 per day' do
+      items = [Item.new(name="Aged Brie", sell_in=2, quality=0)]
+      rose = GildedRose.new(items)
+      expect{rose.update_aged_brie}.to change{items[0].quality}.from(0).to(1)
+    end
+    it "the quality can't go over 50" do
+      items = [Item.new(name="Aged Brie", sell_in=2, quality=50)]
+      rose = GildedRose.new(items)
+      expect{rose.update_aged_brie}.to_not change{items[0].quality}
     end
   end
 end
