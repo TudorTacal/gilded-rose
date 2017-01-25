@@ -10,8 +10,8 @@ class GildedRose
   def update_aged_brie
     @items.each do |item|
       if item.name == "Aged Brie"
-        increase_sellin(item)
-        item.quality += 1 if item.quality < MAXIMUM_QUALITY
+        increase_sellin(item,1)
+        adjust_item_quality(item,1,'increase') if item.quality < MAXIMUM_QUALITY
       end
     end
   end
@@ -19,17 +19,17 @@ class GildedRose
   def update_backstage_passes
     @items.each do |item|
       if item.name == "Backstage passes to a TAFKAL80ETC concert"
-        iincrease_sellin(item)
+        increase_sellin(item,1)
         item.quality += 1 if item.quality == 49
         if item.quality < MAXIMUM_QUALITY
           if item.sell_in < 0
             item.quality = 0
           elsif item.sell_in <= 5
-            item.quality += 3
+            adjust_item_quality(item,3,'increase')
           elsif item.sell_in <= 10
-            item.quality += 2
+            adjust_item_quality(item,2,'increase')
           else
-            item.quality += 1
+            adjust_item_quality(item,1,'increase')
           end
         end
       end
@@ -39,13 +39,13 @@ class GildedRose
   def update_conjured
     @items.each do |item|
       if item.name == "Conjured Mana Cake"
-        increase_sellin(item)
+        increase_sellin(item,1)
         item.quality = 0 if item.quality == 1
         if item.quality > 0
           if item.sell_in < 0
-            item.quality += -4
+              adjust_item_quality(item,4,'decrease')
           else
-            item.quality -= 2
+              adjust_item_quality(item,2,'decrease')
           end
         end
       end
@@ -55,12 +55,12 @@ class GildedRose
   def update_items
     @items.each do |item|
       if !@special_items.include? item.name
-          increase_sellin(item)
+          increase_sellin(item,1)
           if item.quality > 0
             if item.sell_in < 0
-              item.quality -= 2
+              adjust_item_quality(item,2,'decrease')
             else
-              item.quality -= 1
+              adjust_item_quality(item,1,'decrease')
             end
           end
       end
@@ -76,8 +76,12 @@ class GildedRose
 
   private
 
-    def increase_sellin(item,value=1)
-      return item.sell_in -= value
+    def increase_sellin(item,value)
+      item.sell_in -= value
+    end
+
+    def adjust_item_quality(item,value,action)
+      action=='increase' ? item.quality += value : item.quality -= value
     end
 end
 
