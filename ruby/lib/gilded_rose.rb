@@ -1,5 +1,7 @@
 class GildedRose
 
+  MAXIMUM_QUALITY = 50
+
   def initialize(items)
     @items = items
     @special_items = ["Aged Brie", "Backstage passes to a TAFKAL80ETC concert", "Conjured Mana Cake", "Sulfuras, Hand of Ragnaros"]
@@ -8,8 +10,8 @@ class GildedRose
   def update_aged_brie
     @items.each do |item|
       if item.name == "Aged Brie"
-        item.sell_in -= 1
-        item.quality += 1 if item.quality < 50
+        increase_sellin(item)
+        item.quality += 1 if item.quality < MAXIMUM_QUALITY
       end
     end
   end
@@ -17,9 +19,9 @@ class GildedRose
   def update_backstage_passes
     @items.each do |item|
       if item.name == "Backstage passes to a TAFKAL80ETC concert"
-        item.sell_in -= 1
+        iincrease_sellin(item)
         item.quality += 1 if item.quality == 49
-        if item.quality < 50
+        if item.quality < MAXIMUM_QUALITY
           if item.sell_in < 0
             item.quality = 0
           elsif item.sell_in <= 5
@@ -37,7 +39,7 @@ class GildedRose
   def update_conjured
     @items.each do |item|
       if item.name == "Conjured Mana Cake"
-        item.sell_in -= 1
+        increase_sellin(item)
         item.quality = 0 if item.quality == 1
         if item.quality > 0
           if item.sell_in < 0
@@ -53,7 +55,7 @@ class GildedRose
   def update_items
     @items.each do |item|
       if !@special_items.include? item.name
-          item.sell_in -= 1
+          increase_sellin(item)
           if item.quality > 0
             if item.sell_in < 0
               item.quality -= 2
@@ -72,7 +74,11 @@ class GildedRose
     update_backstage_passes
   end
 
+  private
 
+    def increase_sellin(item,value=1)
+      return item.sell_in -= value
+    end
 end
 
 class Item
