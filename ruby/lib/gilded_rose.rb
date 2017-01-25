@@ -6,12 +6,33 @@ class GildedRose
 
   def update_aged_brie
     @items.each do |item|
-      if item.name == "Aged Brie" && item.quality < 50
+      if item.name == "Aged Brie"
         item.sell_in -= 1
-        item.quality += 1
+        item.quality += 1 if item.quality < 50
       end
     end
   end
+
+  def update_backstage_passes
+    @items.each do |item|
+      if item.name == "Backstage passes to a TAFKAL80ETC concert"
+        item.sell_in -= 1
+        if item.quality < 50
+          if item.sell_in < 0
+            item.quality = 0
+          elsif item.sell_in < 6
+            item.quality += 3
+          elsif item.sell_in < 11
+            item.quality += 2
+          else
+            item.quality += 1
+          end
+        end
+      end
+    end
+  end
+
+  
 
   def update_quality()
     @items.each do |item|
