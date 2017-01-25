@@ -2,6 +2,8 @@ class GildedRose
 
   def initialize(items)
     @items = items
+    @special_items = ["Aged Brie", "Backstage passes to a TAFKAL80ETC concert",
+                      "Conjured Mana Cake", "Sulfuras, Hand of Ragnaros"]
   end
 
   def update_aged_brie
@@ -44,6 +46,21 @@ class GildedRose
             item.quality -= 2
           end
         end
+      end
+    end
+  end
+
+  def update_items
+    @items.each do |item|
+      if !@special_items.include? item
+          item.sell_in -= 1
+          if item.quality > 0
+            if item.sell_in < 0
+              item.quality -= 2
+            else
+              item.quality -= 1
+            end
+          end
       end
     end
   end

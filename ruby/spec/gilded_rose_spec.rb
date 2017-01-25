@@ -168,8 +168,27 @@ describe GildedRose do
         rose = GildedRose.new(items)
         expect{rose.update_conjured}.to change{items[0].quality}.from(1).to(0)
       end
-
   end
 
+  describe '#update_items' do
+    it "decreases the quality of the items with 1 per day" do
+      items = [Item.new(name="+5 Dexterity Vest", sell_in=10, quality=20)]
+      rose = GildedRose.new(items)
+      expect{rose.update_items}.to change{items[0].quality}.from(20).to(19)
+    end
+    it 'decreases the quality twice as fast if the sell by date has passed' do
+      items = [Item.new(name="+5 Dexterity Vest", sell_in=10, quality=20)]
+      rose = GildedRose.new(items)
+      10.times do
+        rose.update_items
+      end
+      expect{rose.update_items}.to change{items[0].quality}.from(10).to(8)
+    end
+    it "can't decrease the quality below 0" do
+      items = [Item.new(name="+5 Dexterity Vest", sell_in=1, quality=0)]
+      rose = GildedRose.new(items)
+      expect{rose.update_items}.to_not change{items[0].quality}
+    end
 
+  end
 end
