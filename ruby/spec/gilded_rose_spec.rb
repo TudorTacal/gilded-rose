@@ -57,20 +57,20 @@ describe GildedRose do
     end
     context 'Backstage passes' do
       it 'they increase in quality as its Sellin value approaches' do
-        items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=15, quality=20),]
+        items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=15, quality=20)]
         rose = GildedRose.new(items)
         expect{rose.update_quality()}.to change{items[0].quality}.from(20).to(21)
       end
       it 'their quality increases by 2 when there are 10 days or less until Sellin' do
-        items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=10, quality=20),]
+        items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=10, quality=20)]
         rose = GildedRose.new(items)
-        4.times do
+        3.times do
           rose.update_quality()
         end
-        expect{rose.update_quality()}.to change{items[0].quality}.from(28).to(30)
+        expect{rose.update_quality()}.to change{items[0].quality}.from(26).to(28)
       end
       it 'their quality increases by 3 when there are 5 days or less until Sellin' do
-        items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=5, quality=20),]
+        items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=5, quality=20)]
         rose = GildedRose.new(items)
         4.times do
           rose.update_quality()
@@ -78,29 +78,29 @@ describe GildedRose do
         expect{rose.update_quality()}.to change{items[0].quality}.from(32).to(35)
       end
       it 'their quality drops to 0 after the concert(Sellin)' do
-        items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=0, quality=20),]
+        items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=0, quality=20)]
         rose = GildedRose.new(items)
         expect{rose.update_quality()}.to change{items[0].quality}.from(20).to(0)
       end
       it "the quality can't go over 50" do
-        items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=3, quality=49),]
+        items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=3, quality=49)]
         rose = GildedRose.new(items)
         expect{rose.update_quality()}.to change{items[0].quality}.from(49).to(50)
       end
     end
 
-    # context "for 'Conjured' items" do
-    #   it 'the quality decreases twice as fast as normal items while sellin' do
-    #     items = [Item.new(name="Conjured Mana Cake", sell_in=3, quality=6)]
-    #     rose = GildedRose.new(items)
-    #     expect{rose.update_quality()}.to change{items[0].quality}.from(6).to(4)
-    #   end
-    #   it 'the quality decreases twice as fast as normal items once sell by date has passed' do
-    #     items = [Item.new(name="Conjured Mana Cake", sell_in=-1, quality=6)]
-    #     rose = GildedRose.new(items)
-    #     expect{rose.update_quality()}.to change{items[0].quality}.from(6).to(2)
-    #   end
-    # end
+    context "for 'Conjured' items" do
+      it 'the quality decreases twice as fast as normal items while sellin' do
+        items = [Item.new(name="Conjured Mana Cake", sell_in=3, quality=6)]
+        rose = GildedRose.new(items)
+        expect{rose.update_quality()}.to change{items[0].quality}.from(6).to(4)
+      end
+      it 'the quality decreases twice as fast as normal items once sell by date has passed' do
+        items = [Item.new(name="Conjured Mana Cake", sell_in=-1, quality=6)]
+        rose = GildedRose.new(items)
+        expect{rose.update_quality()}.to change{items[0].quality}.from(6).to(2)
+      end
+    end
   end
 
   describe '#update_aged_brie' do
@@ -189,6 +189,5 @@ describe GildedRose do
       rose = GildedRose.new(items)
       expect{rose.update_items}.to_not change{items[0].quality}
     end
-
   end
 end
