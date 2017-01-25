@@ -32,7 +32,23 @@ class GildedRose
     end
   end
 
-  
+  def update_conjured
+    @items.each do |item|
+      if item.name == "Conjured Mana Cake"
+        item.sell_in -= 1
+        item.quality = 0 if item.quality == 1
+        if item.quality > 0
+          if item.sell_in < 0
+            item.quality -= 4
+          else
+            item.quality -= 2
+          end
+        end
+      end
+    end
+  end
+
+
 
   def update_quality()
     @items.each do |item|

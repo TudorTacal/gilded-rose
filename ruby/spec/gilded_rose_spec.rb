@@ -125,7 +125,6 @@ describe GildedRose do
     it 'their quality increases by 2 when there are 10 days or less until Sellin' do
       items = [Item.new(name="Backstage passes to a TAFKAL80ETC concert", sell_in=10, quality=20)]
       rose = GildedRose.new(items)
-      # require 'pry';binding.pry
       expect{rose.update_backstage_passes}.to change{items[0].quality}.from(20).to(22)
     end
     it 'their quality increases by 3 when there are 5 days or less until Sellin' do
@@ -146,6 +145,30 @@ describe GildedRose do
       rose = GildedRose.new(items)
       expect{rose.update_backstage_passes}.to_not change{items[0].quality}
     end
+  end
+
+  describe '#update_conjured' do
+    it 'the quality decreases twice as fast as normal items while sellin' do
+        items = [Item.new(name="Conjured Mana Cake", sell_in=3, quality=6)]
+        rose = GildedRose.new(items)
+        expect{rose.update_conjured}.to change{items[0].quality}.from(6).to(4)
+      end
+      it 'the quality decreases twice as fast as normal items once sell by date has passed' do
+        items = [Item.new(name="Conjured Mana Cake", sell_in=-1, quality=6)]
+        rose = GildedRose.new(items)
+        expect{rose.update_conjured}.to change{items[0].quality}.from(6).to(2)
+      end
+      it "the quality can't decreases below 0" do
+        items = [Item.new(name="Conjured Mana Cake", sell_in=-1, quality=0)]
+        rose = GildedRose.new(items)
+        expect{rose.update_conjured}.to_not change{items[0].quality}
+      end
+      it "the quality decreases to 0 from 1" do
+        items = [Item.new(name="Conjured Mana Cake", sell_in=-1, quality=1)]
+        rose = GildedRose.new(items)
+        expect{rose.update_conjured}.to change{items[0].quality}.from(1).to(0)
+      end
+
   end
 
 
